@@ -1,0 +1,427 @@
+/* =========================
+   WRAPPER
+========================= */
+
+.admin-wrapper {
+  padding: 20px;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.admin-wrapper h2,
+.admin-wrapper h3 {
+  margin-bottom: 14px;
+  color: #111827;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.admin-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .admin-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   CARD
+========================= */
+
+.admin-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  border: 1px solid #f3f4f6;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.admin-input,
+.admin-card select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  padding: 10px 12px;
+  margin-bottom: 12px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  background: #fff;
+
+  font-size: 14px;
+  color: #111827;
+
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.admin-input:focus,
+.admin-card select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+/* =========================
+   CUSTOM SELECT
+========================= */
+
+.admin-card select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%236b7280' d='M5.5 7l4.5 5 4.5-5z'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+
+  padding-right: 36px;
+}
+
+/* =========================
+   CHECKBOXES
+========================= */
+
+.admin-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.admin-check:hover {
+  background: #f9fafb;
+}
+
+.admin-check input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* =========================
+   BUTTON SYSTEM
+========================= */
+
+.admin-button,
+.admin-button-small,
+.admin-table button {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  font-weight: 600;
+
+  transition: 0.2s ease;
+
+  color: white;
+}
+
+
+
+.admin-button {
+  width: 100%;
+  padding: 12px;
+
+  background: #2563eb;
+
+  font-size: 14px;
+}
+
+.admin-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+
+
+.admin-button-small {
+  padding: 9px 12px;
+
+  background: #10b981;
+
+  font-size: 13px;
+
+  margin-bottom: 10px;
+}
+
+.admin-button-small:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+
+
+.admin-table button {
+  padding: 7px 10px;
+
+  background: #ef4444;
+
+  font-size: 12px;
+}
+
+.admin-table button:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.admin-table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 600px;
+
+  border-collapse: collapse;
+}
+
+/* HEADER */
+
+.admin-table thead {
+  background: #111827;
+  color: white;
+}
+
+.admin-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* BODY */
+
+.admin-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* =========================
+   PERMISSION LIST
+========================= */
+
+.admin-card ul {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.admin-card li {
+  margin-bottom: 6px;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.admin-loading {
+  color: #6b7280;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.admin-empty {
+  padding: 16px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* =========================
+   SCROLL AREA
+========================= */
+
+.admin-scroll {
+  max-height: 220px;
+  overflow-y: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  background: white;
+}
+
+
+
+
+.field-error {
+  color: #ff4d4f;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+
+
+
+.password-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.password-wrapper input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.password-wrapper button {
+  width: 90px;
+  height: 40px;
+
+  border: none;
+  background: #e5e7eb;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+
+  transition: 0.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-wrapper button:hover {
+  background: #d1d5db;
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
+.modal-box {
+  width: 400px;
+  max-width: 90%;
+
+  background: white;
+
+  border-radius: 16px;
+
+  padding: 24px;
+
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+
+  animation: modalAppear 0.2s ease;
+}
+
+.modal-box h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+
+  color: #111827;
+}
+
+.modal-box p {
+  color: #4b5563;
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+
+  padding: 10px 16px;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-neutral {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btn-neutral:hover {
+  background: #d1d5db;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

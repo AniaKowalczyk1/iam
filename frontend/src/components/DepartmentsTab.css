@@ -1,0 +1,339 @@
+.dept-wrapper {
+  padding: 20px;
+  background: #f6f7fb;
+  min-height: 100vh;
+}
+
+.dept-title {
+  margin-bottom: 15px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.dept-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* =========================
+   MAIN TABLE
+========================= */
+
+.dept-table {
+  width: 100%;
+  min-width: 750px;
+  border-collapse: collapse;
+}
+
+.dept-table thead {
+  background: #111827;
+  color: white;
+}
+
+.dept-table thead tr:hover {
+  background: #111827 !important;
+}
+
+.dept-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  cursor: default;
+}
+
+.dept-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.dept-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+/* =========================
+   ROW STATES
+========================= */
+
+.department-row {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.department-row:hover {
+  background: #f3f4f6;
+}
+
+.department-row.active {
+  background: #e0e7ff;
+  border-left: 5px solid #4f46e5;
+  font-weight: 600;
+}
+
+/* =========================
+   EXPANDED SECTION
+========================= */
+
+.expanded-row td {
+  padding: 0 !important;
+  border-bottom: none;
+}
+
+.expanded-content {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-left: 5px solid #4f46e5;
+  padding: 14px;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+.expanded-content h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+/* header inside expanded */
+.expanded-content > div:first-child {
+  margin-bottom: 12px;
+}
+
+/* =========================
+   INNER TABLE
+========================= */
+
+.inner-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.inner-table thead {
+  background: #374151;
+  color: white;
+}
+
+.inner-table thead tr:hover {
+  background: #374151 !important;
+}
+
+.inner-table th {
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.inner-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.inner-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.inner-table tbody tr:hover {
+  background: #eef2ff;
+}
+
+/* =========================
+   CREATE DEPARTMENT
+========================= */
+
+.dept-create {
+  display: flex;
+  gap: 10px;
+}
+
+.dept-create input {
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.dept-create button {
+  padding: 8px 12px;
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dept-create button:hover {
+  background: #1f2937;
+}
+
+/* =========================
+   ASSIGN BUTTON
+========================= */
+
+.dept-assign-btn {
+  padding: 6px 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.dept-assign-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.dept-assign-btn:active {
+  transform: scale(0.98);
+}
+
+/* =========================
+   REMOVE USER BUTTON
+========================= */
+
+.remove-btn {
+  padding: 4px 8px;
+  background: transparent;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: 0.15s ease;
+}
+
+.remove-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+.remove-btn:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   REMOVE ALL BUTTON
+========================= */
+
+.remove-all-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+  background: transparent;
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-all-btn:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+.remove-all-btn:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  width: 340px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  animation: pop 0.15s ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.modal-btn:hover {
+  transform: translateY(-1px);
+}
+
+.modal-btn.danger {
+  background: #ef4444;
+}
+
+.modal-btn.danger:hover {
+  background: #dc2626;
+}
+
+.remove-all-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  background: transparent;
+  color: #9ca3af;
+  border-color: #e5e7eb;
+}
+
+.remove-all-btn:disabled:hover {
+  background: transparent;
+  color: #9ca3af;
+  border-color: #e5e7eb;
+}
