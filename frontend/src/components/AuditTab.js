@@ -70,10 +70,10 @@ export default function AuditTab() {
           {filtersOpen && (
             <div className="filters-panel">
               <input name="id" placeholder="ID" onChange={handleFilterChange} />
-              <input name="userId" placeholder="User" onChange={handleFilterChange} />
-              <input name="action" placeholder="Action" onChange={handleFilterChange} />
-              <input name="details" placeholder="Details" onChange={handleFilterChange} />
-              <input name="date" placeholder="Date" onChange={handleFilterChange} />
+              <input name="userId" placeholder="Użytkownik" onChange={handleFilterChange} />
+              <input name="action" placeholder="Akcja" onChange={handleFilterChange} />
+              <input name="details" placeholder="Szczegóły" onChange={handleFilterChange} />
+              <input name="date" placeholder="Data" onChange={handleFilterChange} />
             </div>
           )}
         </div>
@@ -84,10 +84,10 @@ export default function AuditTab() {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>User</th>
-                <th>Action</th>
-                <th>Details</th>
-                <th>Date</th>
+                <th>Użytkownik</th>
+                <th>Akcja</th>
+                <th>Szczegóły</th>
+                <th>Data</th>
               </tr>
             </thead>
 

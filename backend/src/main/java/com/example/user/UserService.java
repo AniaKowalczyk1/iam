@@ -224,7 +224,7 @@ public class UserService {
 //        log.setEntityId(user.getId());
 
         log.setDetails(
-                "Created user: " + user.getEmail()
+                "Dodano użytkownika: " + user.getEmail()
         );
 
         auditRepo.save(log);
@@ -250,7 +250,7 @@ public class UserService {
 
         log.setUserId(adminId);
         log.setAction("DELETE_USER");
-        log.setDetails("Hard deleted user: " + email);
+        log.setDetails("Usunięto użytkownika: " + email);
 
         auditRepo.save(log);
     }
