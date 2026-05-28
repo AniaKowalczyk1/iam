@@ -273,6 +273,20 @@ public class UserService {
         block.setBlockedAt(LocalDateTime.now());
 
         userBlockRepo.save(block);
+
+        // =========================
+        // AUDIT LOG
+        // =========================
+        AuditLog log = new AuditLog();
+
+        log.setUserId(actorId);
+        log.setAction("USER_BLOCKED");
+        log.setDetails(
+                "Zablokowano użytkownika: " + user.getEmail()
+                        + ", powód: " + reason
+        );
+
+        auditRepo.save(log);
     }
 
     @Transactional
@@ -280,6 +294,8 @@ public class UserService {
 
         User user = userRepo.findById(targetUserId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.isBlocked()) return;
 
         user.setBlocked(false);
         userRepo.save(user);
@@ -290,6 +306,19 @@ public class UserService {
 
         last.setUnblockedAt(LocalDateTime.now());
         userBlockRepo.save(last);
+
+        // =========================
+        // AUDIT LOG
+        // =========================
+        AuditLog log = new AuditLog();
+
+        log.setUserId(actorId);
+        log.setAction("USER_UNBLOCKED");
+        log.setDetails(
+                "Odblokowano użytkownika: " + user.getEmail()
+        );
+
+        auditRepo.save(log);
     }
 
 

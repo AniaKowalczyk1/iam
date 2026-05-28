@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import com.example.employee.EmployeeRepository;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,13 +21,16 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     private final UserRepository userRepo;
+    private final EmployeeRepository employeeRepo;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final PermissionService permissionService;
     private final RecaptchaService recaptchaService;
 
+
     public AuthController(UserRepository userRepo,
+                          EmployeeRepository employeeRepo,
                           JwtService jwtService,
                           PasswordEncoder passwordEncoder,
                           RoleRepository roleRepository,
@@ -34,6 +38,7 @@ public class AuthController {
                           RecaptchaService recaptchaService) {
 
         this.userRepo = userRepo;
+        this.employeeRepo = employeeRepo;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
@@ -76,7 +81,7 @@ public class AuthController {
         String token = jwtService.generateToken(user.getEmail(), permissions);
 
         return ResponseEntity.ok(
-                new AuthResponse(token, roles, permissions)
+                buildAuthResponse(token, user, roles, permissions)
         );
     }
 
@@ -108,7 +113,7 @@ public class AuthController {
         String token = jwtService.generateToken(u.getEmail(), permissions);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new AuthResponse(token, roles, permissions));
+                .body(buildAuthResponse(token, u, roles, permissions));
     }
 
     // =========================
@@ -132,7 +137,28 @@ public class AuthController {
                 permissionService.getEffectivePermissions(user.getId());
 
         return ResponseEntity.ok(
-                new AuthResponse(token, roles, permissions)
+                buildAuthResponse(token, user, roles, permissions)
+        );
+    }
+
+    private AuthResponse buildAuthResponse(
+            String token,
+            User user,
+            Set<String> roles,
+            Set<String> permissions
+    ) {
+        var employee = employeeRepo.findByUserEmail(user.getEmail()).orElse(null);
+
+        String firstName = employee != null ? employee.getFirstName() : null;
+        String lastName = employee != null ? employee.getLastName() : null;
+
+        return new AuthResponse(
+                token,
+                roles,
+                permissions,
+                firstName,
+                lastName,
+                user.getEmail()
         );
     }
 }

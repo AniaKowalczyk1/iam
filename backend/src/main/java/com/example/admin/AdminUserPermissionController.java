@@ -55,9 +55,12 @@ public class AdminUserPermissionController {
             @PathVariable Long permissionId
     ) {
 
+        Long actorId = securityUtils.getCurrentUserId();
+
         userPermissionService.revokePermissionFromUser(
                 userId,
-                permissionId
+                permissionId,
+                actorId
         );
     }
 

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 export default function Sidebar({
   tabs,
   activeTab,
-  setActiveTab
+  setActiveTab,
+  user
 }) {
   const navigate = useNavigate();
 
@@ -13,9 +14,19 @@ export default function Sidebar({
     navigate("/");
   };
 
+  const fullName = [user?.firstName, user?.lastName]
+    .filter(Boolean)
+    .join(" ");
+
+  const displayName = fullName || user?.email || "Użytkownik";
+
   return (
     <div className="sidebar">
 
+      <div className="sidebar-user">
+        <div className="sidebar-user-label">Zalogowano jako</div>
+        <div className="sidebar-user-name">{displayName}</div>
+      </div>
 
       <button
         className="sidebar-button logout"

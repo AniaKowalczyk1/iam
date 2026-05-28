@@ -43,3 +43,24 @@
 .sidebar-button.logout:hover {
   background: #475569;
 }
+
+.sidebar-user {
+  color: white;
+  background: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.sidebar-user-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.sidebar-user-name {
+  font-size: 15px;
+  font-weight: 600;
+  word-break: break-word;
+}

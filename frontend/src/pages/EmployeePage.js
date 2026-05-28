@@ -20,6 +20,7 @@ import "./EmployeePage.css";
 export default function EmployeePage() {
 
   const {
+    user,
     permissions,
     hasPermission,
     loading
@@ -151,6 +152,7 @@ export default function EmployeePage() {
         tabs={tabs}
         activeTab={currentTab}
         setActiveTab={setActiveTab}
+        user={user}
       />
 
       {/* CONTENT */}

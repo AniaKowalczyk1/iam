@@ -48,12 +48,9 @@ public class DepartmentController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Department d) {
-
-        if (repo.existsByNameIgnoreCase(d.getName())) {
-            return ResponseEntity.status(409).body("Department already exists");
-        }
-
-        return ResponseEntity.ok(repo.save(d));
+        return ResponseEntity.ok(
+                departmentService.createDepartment(d)
+        );
     }
 
     @PostMapping("/assign")

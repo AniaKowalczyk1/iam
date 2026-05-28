@@ -64,14 +64,14 @@ export default function AuditTab() {
             className="filters-btn"
             onClick={() => setFiltersOpen((prev) => !prev)}
           >
-            Filters {filtersOpen ? "▲" : "▼"}
+            Filtry {filtersOpen ? "▲" : "▼"}
           </button>
 
           {filtersOpen && (
             <div className="filters-panel">
               <input name="id" placeholder="ID" onChange={handleFilterChange} />
               <input name="userId" placeholder="Użytkownik" onChange={handleFilterChange} />
-              <input name="action" placeholder="Akcja" onChange={handleFilterChange} />
+              <input name="action" placeholder="Działanie" onChange={handleFilterChange} />
               <input name="details" placeholder="Szczegóły" onChange={handleFilterChange} />
               <input name="date" placeholder="Data" onChange={handleFilterChange} />
             </div>
@@ -85,7 +85,7 @@ export default function AuditTab() {
               <tr>
                 <th>ID</th>
                 <th>Użytkownik</th>
-                <th>Akcja</th>
+                <th>Działanie</th>
                 <th>Szczegóły</th>
                 <th>Data</th>
               </tr>
