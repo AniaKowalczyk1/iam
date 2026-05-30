@@ -4,7 +4,7 @@ import { usePermissions } from "../hooks/usePermissions";
 import "./UsersTab.css";
 
 export default function UsersTab() {
-
+  const [currentUser, setCurrentUser] = useState(null);
   const { hasPermission } = usePermissions();
 
   const [email, setEmail] = useState("");
@@ -30,6 +30,8 @@ export default function UsersTab() {
   const [permissions, setPermissions] = useState([]);
   const [availablePermissions, setAvailablePermissions] = useState([]);
 
+  const [roleHelpOpen, setRoleHelpOpen] = useState(false);
+  const [roleHelpData, setRoleHelpData] = useState([]);
   // =========================
   // USERS
   // =========================
@@ -51,6 +53,7 @@ export default function UsersTab() {
   useEffect(() => {
     loadMeta();
     loadUsers();
+    loadMe();
   }, []);
 
   const loadMeta = async () => {
@@ -77,6 +80,23 @@ export default function UsersTab() {
     }
   };
 
+  const loadMe = async () => {
+    try {
+      const res = await api.get("/auth/me");
+      setCurrentUser(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const loadRoleHelp = async () => {
+    try {
+      const res = await api.get("/roles/with-permissions");
+      setRoleHelpData(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   // =========================
   // VALIDATION
   // =========================
@@ -142,7 +162,7 @@ export default function UsersTab() {
 
     // DEPARTMENTS
     if (departments.length === 0) {
-      newErrors.departments = "Wybierz przynajmniej jeden dział";
+      newErrors.departments = "Wybierz dział";
     }
 
     setErrors(newErrors);
@@ -151,10 +171,15 @@ export default function UsersTab() {
   };
 
   const addPermission = () => {
+    const perm = availablePermissions.find(p => p.id === Number(permissionId));
+
+    if (!perm) return;
+
     setPermissions([
       ...permissions,
       {
-        permissionId: Number(permissionId),
+        permissionId: perm.id,
+        permissionName: perm.name,
         effect,
         reason
       }
@@ -264,6 +289,10 @@ export default function UsersTab() {
     }
   };
 
+  const removePermission = (index) => {
+    setPermissions((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="admin-wrapper">
 
@@ -357,7 +386,19 @@ export default function UsersTab() {
           )}
 
 
-          <h4>Rola</h4>
+          <h4>
+            Rola
+            <button
+              type="button"
+              className="role-help-btn"
+              onClick={() => {
+                setRoleHelpOpen(true);
+                loadRoleHelp();
+              }}
+            >
+              ❓
+            </button>
+          </h4>
 
           {roleOptions.map((r) => (
             <label key={r.id} className="admin-check">
@@ -443,8 +484,26 @@ export default function UsersTab() {
 
               <ul>
                 {permissions.map((p, i) => (
-                  <li key={i}>
-                    {p.permissionId} | {p.effect} | {p.reason}
+                  <li key={i} className="perm-item">
+                    <span>
+                      {p.permissionName} | {p.effect} | {p.reason}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => removePermission(i)}
+                      style={{
+                        marginLeft: "10px",
+                        background: "#ef4444",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "6px",
+                        padding: "3px 8px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Usuń
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -494,13 +553,17 @@ export default function UsersTab() {
                     hasPermission("UNBLOCK_USER")) && (
                     <td>
 
-                      {hasPermission("DELETE_USER") && (
+                      {hasPermission("DELETE_USER") && u.email !== currentUser?.email && (
                         <button onClick={() => deleteUser(u.id)}>
                           Usuń
                         </button>
                       )}
 
-                      {hasPermission("BLOCK_USER") && !u.blocked && (
+
+
+                      {hasPermission("BLOCK_USER") &&
+                       !u.blocked &&
+                       u.email !== currentUser?.email && (
                         <button onClick={() => blockUser(u.id)}>
                           Block
                         </button>
@@ -599,6 +662,45 @@ export default function UsersTab() {
                 onClick={() => setSuccessModal(false)}
               >
                 OK
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {roleHelpOpen && (
+        <div className="modal-overlay">
+          <div className="modal-box--large">
+
+            <h3>📌 Role i ich uprawnienia</h3>
+
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Rola</th>
+                  <th>Uprawnienia</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {roleHelpData.map((r) => (
+                  <tr key={r.id}>
+                    <td>{r.roleName}</td>
+                    <td>
+                      {r.permissions.join(", ")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="modal-actions">
+              <button
+                className="btn btn-neutral"
+                onClick={() => setRoleHelpOpen(false)}
+              >
+                Zamknij
               </button>
             </div>
 
