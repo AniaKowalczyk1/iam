@@ -55,7 +55,7 @@ public class SecurityConfig {
 //                        .hasAuthority("VIEW_TASK")
 
                         // departments
-                        .requestMatchers("/departments/my")
+                        .requestMatchers("/departments/view")
                         .hasAuthority("VIEW_DEPARTMENT")
 
                         .requestMatchers(HttpMethod.POST, "/departments/assign")
@@ -72,6 +72,9 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/departments/**")
                         .hasAuthority("VIEW_DEPARTMENTS")
+
+
+
 
                         .requestMatchers(HttpMethod.GET, "/tasks/own")
                         .hasAuthority("VIEW_OWN_TASKS")

@@ -92,7 +92,8 @@ export default function EmployeePage() {
 
     // DEPARTMENTS
     if (
-      hasPermission("VIEW_DEPARTMENTS")
+      hasPermission("VIEW_DEPARTMENTS")||
+      hasPermission("VIEW_DEPARTMENT")
     ) {
       arr.push({
         key: "departments",
