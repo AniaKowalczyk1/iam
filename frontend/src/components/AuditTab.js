@@ -58,7 +58,6 @@ export default function AuditTab() {
 
       <div className="audit-card">
 
-        {/* DROPDOWN FILTERS */}
         <div className="filters-bar">
           <button
             className="filters-btn"
@@ -69,16 +68,39 @@ export default function AuditTab() {
 
           {filtersOpen && (
             <div className="filters-panel">
-              <input name="id" placeholder="ID" onChange={handleFilterChange} />
-              <input name="userId" placeholder="Użytkownik" onChange={handleFilterChange} />
-              <input name="action" placeholder="Działanie" onChange={handleFilterChange} />
-              <input name="details" placeholder="Szczegóły" onChange={handleFilterChange} />
-              <input name="date" placeholder="Data" onChange={handleFilterChange} />
+              <input
+                name="id"
+                placeholder="ID"
+                onChange={handleFilterChange}
+              />
+
+              <input
+                name="userId"
+                placeholder="ID użytkownika"
+                onChange={handleFilterChange}
+              />
+
+              <input
+                name="action"
+                placeholder="Działanie"
+                onChange={handleFilterChange}
+              />
+
+              <input
+                name="details"
+                placeholder="Szczegóły"
+                onChange={handleFilterChange}
+              />
+
+              <input
+                name="date"
+                placeholder="Data"
+                onChange={handleFilterChange}
+              />
             </div>
           )}
         </div>
 
-        {/* TABLE WRAPPER (scroll fix) */}
         <div className="table-wrapper">
           <table className="audit-table">
             <thead>
@@ -98,7 +120,16 @@ export default function AuditTab() {
                 return (
                   <tr key={log.id}>
                     <td>{log.id}</td>
-                    <td>{log.userId}</td>
+
+                    <td>
+                      <div>
+                        <strong>ID: {log.userId}</strong>
+                        <br />
+                        <span style={{ color: "#666", fontSize: "13px" }}>
+                          {log.userEmail}
+                        </span>
+                      </div>
+                    </td>
 
                     <td>
                       <span className={`badge ${type}`}>
@@ -107,6 +138,7 @@ export default function AuditTab() {
                     </td>
 
                     <td>{log.details}</td>
+
                     <td>
                       {new Date(log.timestamp).toLocaleString()}
                     </td>
