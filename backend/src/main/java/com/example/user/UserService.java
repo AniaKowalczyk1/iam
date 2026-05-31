@@ -12,6 +12,7 @@ import com.example.permission.UserPermission;
 import com.example.permission.UserPermissionRepository;
 import com.example.role.Role;
 import com.example.role.RoleRepository;
+import com.example.security.PermissionService;
 import com.example.user.dto.CreateUserRequest;
 import com.example.user.dto.PermissionOverrideDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +39,7 @@ public class UserService {
     private final AuditLogRepository auditRepo;
     private final PasswordEncoder encoder;
     private final UserBlockRepository userBlockRepo;
+    private final PermissionService permissionService;
 
     private Long getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -61,6 +63,7 @@ public class UserService {
                        PermissionRepository permissionRepo,
                        AuditLogRepository auditRepo,
                        PasswordEncoder encoder,
+                       PermissionService permissionService,
                        UserBlockRepository userBlockRepo) {
 
         this.userRepo = userRepo;
@@ -71,6 +74,7 @@ public class UserService {
         this.permissionRepo = permissionRepo;
         this.auditRepo = auditRepo;
         this.encoder = encoder;
+        this.permissionService = permissionService;
         this.userBlockRepo = userBlockRepo;
     }
 
@@ -321,5 +325,26 @@ public class UserService {
         auditRepo.save(log);
     }
 
+    @Transactional
+    public void resetPassword(Long targetUserId, String newPassword) {
+
+        Long actorId = getCurrentUserId();
+
+        User user = userRepo.findById(targetUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setPasswordHash(
+                encoder.encode(newPassword)
+        );
+
+        userRepo.save(user);
+
+        AuditLog log = new AuditLog();
+        log.setUserId(actorId);
+        log.setAction("RESET_PASSWORD");
+        log.setDetails("Zmieniono hasło użytkownika: " + user.getEmail());
+
+        auditRepo.save(log);
+    }
 
 }

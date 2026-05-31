@@ -127,6 +127,7 @@
 .admin-button,
 .admin-button-small,
 .admin-table button {
+  margin-left: 5px;
   border: none;
   border-radius: 10px;
   cursor: pointer;

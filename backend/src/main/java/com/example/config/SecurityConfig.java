@@ -112,6 +112,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/employees/**")
                         .hasAuthority("UPDATE_EMPLOYEE")
 
+                        .requestMatchers(HttpMethod.PUT, "/users/*/reset-password")
+                        .hasAuthority("RESET_PASSWORD")
 
                         .anyRequest().authenticated()
                 )

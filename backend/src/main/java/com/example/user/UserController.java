@@ -2,6 +2,7 @@ package com.example.user;
 
 import com.example.role.Role;
 import com.example.security.PermissionService;
+import com.example.user.dto.ResetPasswordRequest;
 import com.example.user.dto.UserWithPermissionsDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +17,14 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final PermissionService permissionService;
+    private final UserService userService;
 
     public UserController(UserRepository userRepository,
-                          PermissionService permissionService) {
+                          PermissionService permissionService,
+                          UserService userService) {
         this.userRepository = userRepository;
         this.permissionService = permissionService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -46,5 +50,14 @@ public class UserController {
                     );
                 })
                 .toList();
+    }
+
+    @PutMapping("/{userId}/reset-password")
+    public void resetPassword(
+            @PathVariable Long userId,
+            @RequestBody ResetPasswordRequest request
+    ) {
+
+        userService.resetPassword(userId, request.getNewPassword());
     }
 }

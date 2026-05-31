@@ -7,9 +7,13 @@ export default function UsersTab() {
   const [currentUser, setCurrentUser] = useState(null);
   const { hasPermission } = usePermissions();
 
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [resetModal, setResetModal] = useState(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [resetErrors, setResetErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
   const [errors, setErrors] = useState({});
@@ -169,6 +173,57 @@ export default function UsersTab() {
 
     return Object.keys(newErrors).length === 0;
   };
+  const validateResetPassword = (password) => {
+    const errors = {};
+
+    if (!password.trim()) {
+      errors.newPassword = "Hasło jest wymagane";
+    } else if (password.length < 8) {
+      errors.newPassword = "Hasło musi mieć minimum 8 znaków";
+    } else if (!/[A-Z]/.test(password)) {
+      errors.newPassword = "Hasło musi zawierać wielką literę";
+    } else if (!/[a-z]/.test(password)) {
+      errors.newPassword = "Hasło musi zawierać małą literę";
+    } else if (!/[0-9]/.test(password)) {
+      errors.newPassword = "Hasło musi zawierać cyfrę";
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors.newPassword = "Hasło musi zawierać znak specjalny";
+    }
+
+    return errors;
+  };
+  const openResetModal = (userId) => {
+    setResetModal(userId);
+    setNewPassword("");
+    setResetErrors({});
+  };
+
+
+  const confirmResetPassword = async () => {
+
+    const validationErrors = validateResetPassword(newPassword);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setResetErrors(validationErrors);
+      return;
+    }
+
+    try {
+      await api.put(`/users/${resetModal}/reset-password`, {
+        newPassword
+      });
+
+      setResetModal(null);
+      setNewPassword("");
+      setResetErrors({});
+
+      setSuccessMessage("Hasło zostało zresetowane.");
+      setSuccessModal(true);
+    } catch (err) {
+      console.error(err);
+      alert("Błąd resetowania hasła");
+    }
+  };
 
   const addPermission = () => {
     const perm = availablePermissions.find(p => p.id === Number(permissionId));
@@ -217,6 +272,7 @@ export default function UsersTab() {
       setPermissions([]);
       setErrors({});
 
+      setSuccessMessage("Użytkownik został utworzony.");
       setSuccessModal(true);
 
       loadUsers();
@@ -535,7 +591,8 @@ export default function UsersTab() {
                 <th>Blokada</th>
                 {(hasPermission("DELETE_USER") ||
                   hasPermission("BLOCK_USER") ||
-                  hasPermission("UNBLOCK_USER")) && (
+                  hasPermission("UNBLOCK_USER") ||
+                  hasPermission("RESET_PASSWORD") ) && (
                   <th>Akcja</th>
                 )}
               </tr>
@@ -550,7 +607,8 @@ export default function UsersTab() {
 
                   {(hasPermission("DELETE_USER") ||
                     hasPermission("BLOCK_USER") ||
-                    hasPermission("UNBLOCK_USER")) && (
+                    hasPermission("UNBLOCK_USER")||
+                    hasPermission("RESET_PASSWORD")) && (
                     <td>
 
                       {hasPermission("DELETE_USER") && u.email !== currentUser?.email && (
@@ -572,6 +630,20 @@ export default function UsersTab() {
                       {hasPermission("UNBLOCK_USER") && u.blocked && (
                         <button onClick={() => unblockUser(u.id)}>
                           Unblock
+                        </button>
+                      )}
+
+                      {hasPermission("RESET_PASSWORD") && (
+                        <button
+                          onClick={() => openResetModal(u.id)}
+                          style={{
+                            background: "#f59e0b",
+                            color: "white",
+                            border: "none",
+
+                          }}
+                        >
+                          Reset hasła
                         </button>
                       )}
 
@@ -654,7 +726,7 @@ export default function UsersTab() {
 
             <h3>✅ Sukces</h3>
 
-            <p>Użytkownik został utworzony.</p>
+            <p>{successMessage}</p>
 
             <div className="modal-actions">
               <button
@@ -707,6 +779,42 @@ export default function UsersTab() {
           </div>
         </div>
       )}
+
+      {resetModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>🔑 Reset hasła</h3>
+
+            <input
+              className="admin-input"
+              //type="password"
+              placeholder="Nowe hasło"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+
+            {resetErrors.newPassword && (
+              <div className="field-error">
+                {resetErrors.newPassword}
+              </div>
+            )}
+
+            <div className="modal-actions">
+              <button className="btn btn-danger" onClick={confirmResetPassword}>
+                Zmień hasło
+              </button>
+
+              <button
+                className="btn btn-neutral"
+                onClick={() => setResetModal(null)}
+              >
+                Anuluj
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
     </div>
   );
