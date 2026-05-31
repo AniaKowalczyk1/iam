@@ -17,10 +17,16 @@ export default function DepartmentsTab() {
     "ASSIGN_REMOVE_USER_TO_FROM_DEPARTMENT"
   );
 
+  const canEditDepartments = hasPermission("CREATE_DEPARTMENT");
+
   // ===== MODALS =====
   const [assignModal, setAssignModal] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [deleteAllConfirm, setDeleteAllConfirm] = useState(null);
+
+  const [editModal, setEditModal] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editError, setEditError] = useState("");
 
   const [selectedUserId, setSelectedUserId] = useState("");
   const [expandedDepartments, setExpandedDepartments] = useState([]);
@@ -69,6 +75,37 @@ export default function DepartmentsTab() {
 
     setName("");
     await loadDepartments();
+  };
+
+  const openEditModal = (department) => {
+    setEditModal(department);
+    setEditName(department.name);
+    setEditError("");
+  };
+
+  const confirmEditDepartment = async () => {
+    if (!editModal || !editName.trim()) return;
+
+    setLoading(true);
+
+    try {
+      await api.put(`/departments/${editModal.id}`, {
+        name: editName,
+      });
+
+      setEditModal(null);
+      setEditName("");
+      setEditError("");
+      await reloadAll();
+    } catch (error) {
+      if (error.response?.status === 409) {
+        setEditError("Dział o takiej nazwie już istnieje");
+      } else {
+        setEditError("Nie udało się zmienić nazwy działu");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const confirmAssignUser = async () => {
@@ -205,7 +242,7 @@ export default function DepartmentsTab() {
                 <tr>
                   <th>ID</th>
                   <th>Nazwa</th>
-                  {canManageUsers && <th>Akcja</th>}
+                  {(canManageUsers || canEditDepartments) && <th>Akcja</th>}
                 </tr>
               </thead>
 
@@ -230,16 +267,29 @@ export default function DepartmentsTab() {
                         </td>
                         <td>{d.name}</td>
 
-                        {canManageUsers && (
+                        {(canManageUsers || canEditDepartments) && (
                           <td onClick={(e) => e.stopPropagation()}>
-                            <button
-                              className="dept-assign-btn"
-                              onClick={() =>
-                                setAssignModal({ deptId: d.id })
-                              }
-                            >
-                              Przypisz pracownika
-                            </button>
+                            <div className="dept-actions">
+                              {canEditDepartments && (
+                                <button
+                                  className="dept-edit-btn"
+                                  onClick={() => openEditModal(d)}
+                                >
+                                  Edytuj nazwę
+                                </button>
+                              )}
+
+                              {canManageUsers && (
+                                <button
+                                  className="dept-assign-btn"
+                                  onClick={() =>
+                                    setAssignModal({ deptId: d.id })
+                                  }
+                                >
+                                  Przypisz pracownika
+                                </button>
+                              )}
+                            </div>
                           </td>
                         )}
                       </tr>
@@ -322,6 +372,56 @@ export default function DepartmentsTab() {
                 })}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT DEPARTMENT MODAL */}
+      {editModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>✏️ Edytuj dział</h3>
+
+            <p>
+              Aktualna nazwa: <b>{editModal.name}</b>
+            </p>
+
+            <input
+              className="modal-input"
+              value={editName}
+              onChange={(e) => {
+                setEditName(e.target.value);
+                setEditError("");
+              }}
+              placeholder="Nowa nazwa działu"
+            />
+
+            {editError && (
+              <p style={{ color: "red", marginTop: "10px", fontSize: "13px" }}>
+                {editError}
+              </p>
+            )}
+
+            <div className="modal-actions">
+              <button
+                className="modal-btn"
+                onClick={confirmEditDepartment}
+                disabled={!editName.trim() || loading}
+              >
+                {loading ? "..." : "Zapisz"}
+              </button>
+
+              <button
+                className="modal-btn danger"
+                onClick={() => {
+                  setEditModal(null);
+                  setEditName("");
+                  setEditError("");
+                }}
+              >
+                Anuluj
+              </button>
+            </div>
           </div>
         </div>
       )}

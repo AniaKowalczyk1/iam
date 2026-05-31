@@ -104,4 +104,55 @@ public class DepartmentService {
 
         return savedDepartment;
     }
+
+    @Transactional
+    public Department updateDepartmentName(Long departmentId, String name) {
+
+        if (name == null || name.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Department name cannot be empty"
+            );
+        }
+
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        String newName = name.trim();
+        String oldName = department.getName();
+
+        if (oldName.equalsIgnoreCase(newName)) {
+            return department;
+        }
+
+        if (departmentRepository.existsByNameIgnoreCaseAndIdNot(newName, departmentId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Department already exists"
+            );
+        }
+
+        department.setName(newName);
+
+        Department savedDepartment = departmentRepository.save(department);
+
+        // =========================
+        // AUDIT LOG
+        // =========================
+        AuditLog log = new AuditLog();
+
+        log.setUserId(getCurrentUserId());
+        log.setAction("DEPARTMENT_UPDATED");
+        log.setDetails(
+                "Zmieniono nazwę działu: "
+                        + oldName
+                        + " -> "
+                        + savedDepartment.getName()
+        );
+
+        auditRepo.save(log);
+
+        return savedDepartment;
+    }
 }

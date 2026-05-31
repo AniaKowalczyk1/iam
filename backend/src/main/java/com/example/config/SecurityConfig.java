@@ -70,6 +70,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/departments")
                         .hasAuthority("CREATE_DEPARTMENT")
 
+                        .requestMatchers(HttpMethod.PUT, "/departments/*")
+                        .hasAuthority("CREATE_DEPARTMENT")
+
                         .requestMatchers(HttpMethod.GET, "/departments/**")
                         .hasAuthority("VIEW_DEPARTMENTS")
 

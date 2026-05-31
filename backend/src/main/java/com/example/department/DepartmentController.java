@@ -5,6 +5,7 @@ import com.example.user.UserDepartmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import com.example.department.dto.UpdateDepartmentRequest;
 
 import java.util.List;
 
@@ -50,6 +51,16 @@ public class DepartmentController {
     public ResponseEntity<?> create(@RequestBody Department d) {
         return ResponseEntity.ok(
                 departmentService.createDepartment(d)
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateDepartmentName(
+            @PathVariable Long id,
+            @RequestBody UpdateDepartmentRequest request
+    ) {
+        return ResponseEntity.ok(
+                departmentService.updateDepartmentName(id, request.getName())
         );
     }
 
